@@ -1,20 +1,22 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "hello-app.fullname" . }}-ingress
+  name: ona-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates: "{{ include "hello-app.fullname" . }}-cert"
-    kubernetes.io/ingress.global-static-ip-name: {{ .Values.global.globalStaticIP | quote }}
+    networking.gke.io/managed-certificates:
+      { { .Values.global.managedCertName } }
+    kubernetes.io/ingress.global-static-ip-name:
+      { { .Values.global.globalStaticIP | quote } }
 spec:
   rules:
-  - host: {{ .Values.global.domain }}
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend
-            port:
-              number: 8080
+    - host: { { .Values.global.domain } }
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 8080
