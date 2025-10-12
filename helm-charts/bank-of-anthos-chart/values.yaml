@@ -38,6 +38,8 @@ global:
     capabilities:
       drop:
         - all
+  domain: onaplayground.shop
+  globalStaticIP: k8s2-fr-ugc4nk2b-default-hello-ingress-l11cztmq
 
 # JWT configuration
 jwt:
