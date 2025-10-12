@@ -39,7 +39,7 @@ global:
       drop:
         - all
   domain: onaplayground.shop
-  globalStaticIP: k8s2-fr-ugc4nk2b-default-hello-ingress-l11cztmq
+  globalStaticIP: ona-playground-ip
   managedCertName: ona-cert
 
 # JWT configuration
