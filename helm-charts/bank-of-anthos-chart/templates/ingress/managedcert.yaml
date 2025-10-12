@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: { { .Values.global.managedCertName } }
+  name: "{{ .Values.global.managedCertName }}"
 spec:
   domains:
-    - { { .Values.global.domain } }
+    - "{{ .Values.global.domain }}"

@@ -4,13 +4,11 @@ metadata:
   name: ona-ingress
   annotations:
     kubernetes.io/ingress.class: "gce"
-    networking.gke.io/managed-certificates:
-      { { .Values.global.managedCertName } }
-    kubernetes.io/ingress.global-static-ip-name:
-      { { .Values.global.globalStaticIP | quote } }
+    networking.gke.io/managed-certificates: "{{ .Values.global.managedCertName }}"
+    kubernetes.io/ingress.global-static-ip-name: "{{ .Values.global.globalStaticIP }}"
 spec:
   rules:
-    - host: { { .Values.global.domain } }
+    - host: "{{ .Values.global.domain }}"
       http:
         paths:
           - path: /
