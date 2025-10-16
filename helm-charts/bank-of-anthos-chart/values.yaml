@@ -38,6 +38,9 @@ global:
     capabilities:
       drop:
         - all
+  domain: onaplayground.shop
+  globalStaticIP: ona-playground-ip
+  managedCertName: ona-cert
 
 # JWT configuration
 jwt:
@@ -79,7 +82,7 @@ frontend:
     digest: "sha256:6d92f3ce81a389738baf236477c6795831a0802c7a007697d7121f10eab9a2cc"
   
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 80
     targetPort: 8080
   
@@ -322,6 +325,13 @@ contacts:
     initialDelaySeconds: 10
     periodSeconds: 5
     timeoutSeconds: 10
+  
+  # Volume configuration
+  volume:
+    enabled: true
+    size: 5Gi
+    storageClass: "standard-rwo"  # GCP standard persistent disk
+    mountPath: "/app/data"
 
 # User Service configuration
 userService:
@@ -436,3 +446,52 @@ monitoring:
     enabled: false
   metrics:
     enabled: false
+
+# ArgoCD Application configuration
+argocd:
+  enabled: false  # Set to true to create ArgoCD Application resource
+  namespace: argocd
+  
+  application:
+    name: bank-of-anthos
+    project: default
+    
+    # Source configuration
+    source:
+      repoURL: https://github.com/bas0N/bank-of-anthos.git
+      targetRevision: main
+      path: helm-charts/bank-of-anthos-chart
+      
+      # Helm-specific configuration
+      helm:
+        valueFiles:
+          - values.yaml
+        # Optional: Override values
+        # values: {}
+        # Optional: Set parameters
+        # parameters: []
+    
+    # Destination configuration
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: default
+    
+    # Sync policy configuration
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+    
+    # Optional: Labels and annotations
+    labels: {}
+    annotations: {}
+    
+    # Optional: Ignore differences
+    # ignoreDifferences: []
+    
+    # Optional: Application info
+    # info: []

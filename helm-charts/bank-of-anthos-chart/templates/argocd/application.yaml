@@ -1,0 +1,51 @@
+{{- if .Values.argocd.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Values.argocd.application.name | default "bank-of-anthos" }}
+  namespace: {{ .Values.argocd.namespace | default "argocd" }}
+  {{- with .Values.argocd.application.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.argocd.application.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  project: {{ .Values.argocd.application.project | default "default" }}
+  source:
+    repoURL: {{ .Values.argocd.application.source.repoURL | default "https://github.com/bas0N/bank-of-anthos.git" }}
+    targetRevision: {{ .Values.argocd.application.source.targetRevision | default "main" }}
+    path: {{ .Values.argocd.application.source.path | default "helm-charts/bank-of-anthos-chart" }}
+    {{- if .Values.argocd.application.source.helm }}
+    helm:
+      {{- with .Values.argocd.application.source.helm.valueFiles }}
+      valueFiles:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.argocd.application.source.helm.values }}
+      values: |
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.argocd.application.source.helm.parameters }}
+      parameters:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- end }}
+  destination:
+    server: {{ .Values.argocd.application.destination.server | default "https://kubernetes.default.svc" }}
+    namespace: {{ .Values.argocd.application.destination.namespace | default "default" }}
+  {{- with .Values.argocd.application.syncPolicy }}
+  syncPolicy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.argocd.application.ignoreDifferences }}
+  ignoreDifferences:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.argocd.application.info }}
+  info:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
