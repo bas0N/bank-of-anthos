@@ -78,6 +78,10 @@ spec:
             - mountPath: /tmp/.ssh
               name: publickey
               readOnly: true
+            {{- if .Values.contacts.volume.enabled }}
+            - mountPath: {{ .Values.contacts.volume.mountPath }}
+              name: data-volume
+            {{- end }}
       securityContext:
         {{- toYaml .Values.global.securityContext | nindent 8 }}
       serviceAccountName: {{ .Values.global.serviceAccountName }}
@@ -91,4 +95,9 @@ spec:
               - key: {{ .Values.jwt.keyName }}
                 path: publickey
             secretName: {{ .Values.jwt.secretName }}
+        {{- if .Values.contacts.volume.enabled }}
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: contacts-data-pvc
+        {{- end }}
 {{- end }}

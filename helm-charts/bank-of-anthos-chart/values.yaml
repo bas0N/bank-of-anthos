@@ -325,6 +325,13 @@ contacts:
     initialDelaySeconds: 10
     periodSeconds: 5
     timeoutSeconds: 10
+  
+  # Volume configuration
+  volume:
+    enabled: false
+    size: 1Gi
+    storageClass: "standard-rwo"  # GCP standard persistent disk
+    mountPath: "/app/data"
 
 # User Service configuration
 userService:
