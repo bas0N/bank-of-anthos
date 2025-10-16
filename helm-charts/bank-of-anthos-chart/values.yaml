@@ -449,7 +449,7 @@ monitoring:
 
 # ArgoCD Application configuration
 argocd:
-  enabled: false  # Set to true to create ArgoCD Application resource
+  enabled: true  # Set to true to create ArgoCD Application resource
   namespace: argocd
   
   application:
