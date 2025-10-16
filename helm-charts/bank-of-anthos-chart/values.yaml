@@ -491,7 +491,34 @@ argocd:
     annotations: {}
     
     # Optional: Ignore differences
-    # ignoreDifferences: []
+    ignoreDifferences:
+      - group: apps
+        kind: Deployment
+        name: contacts
+        jsonPointers:
+          - /spec/replicas
+          - /spec/template/metadata/annotations/checksum
+          - /spec/template/metadata/annotations/meta.helm.sh/release-name
+          - /spec/template/metadata/annotations/meta.helm.sh/release-namespace
+          - /metadata/annotations/deployment.kubernetes.io~1revision
+      - group: apps
+        kind: Deployment
+        name: frontend
+        jsonPointers:
+          - /spec/replicas
+          - /spec/template/metadata/annotations/checksum
+          - /spec/template/metadata/annotations/meta.helm.sh/release-name
+          - /spec/template/metadata/annotations/meta.helm.sh/release-namespace
+          - /metadata/annotations/deployment.kubernetes.io~1revision
+      - group: apps
+        kind: Deployment
+        name: userservice
+        jsonPointers:
+          - /spec/replicas
+          - /spec/template/metadata/annotations/checksum
+          - /spec/template/metadata/annotations/meta.helm.sh/release-name
+          - /spec/template/metadata/annotations/meta.helm.sh/release-namespace
+          - /metadata/annotations/deployment.kubernetes.io~1revision
     
     # Optional: Application info
     # info: []
