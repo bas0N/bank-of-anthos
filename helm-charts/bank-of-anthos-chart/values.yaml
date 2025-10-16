@@ -446,3 +446,52 @@ monitoring:
     enabled: false
   metrics:
     enabled: false
+
+# ArgoCD Application configuration
+argocd:
+  enabled: false  # Set to true to create ArgoCD Application resource
+  namespace: argocd
+  
+  application:
+    name: bank-of-anthos
+    project: default
+    
+    # Source configuration
+    source:
+      repoURL: https://github.com/bas0N/bank-of-anthos.git
+      targetRevision: main
+      path: helm-charts/bank-of-anthos-chart
+      
+      # Helm-specific configuration
+      helm:
+        valueFiles:
+          - values.yaml
+        # Optional: Override values
+        # values: {}
+        # Optional: Set parameters
+        # parameters: []
+    
+    # Destination configuration
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: default
+    
+    # Sync policy configuration
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+    
+    # Optional: Labels and annotations
+    labels: {}
+    annotations: {}
+    
+    # Optional: Ignore differences
+    # ignoreDifferences: []
+    
+    # Optional: Application info
+    # info: []
