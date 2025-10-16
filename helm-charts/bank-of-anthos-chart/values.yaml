@@ -328,8 +328,8 @@ contacts:
   
   # Volume configuration
   volume:
-    enabled: false
-    size: 1Gi
+    enabled: true
+    size: 5Gi
     storageClass: "standard-rwo"  # GCP standard persistent disk
     mountPath: "/app/data"
 
